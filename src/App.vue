@@ -1,26 +1,40 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <StartPage v-if="currentPage === 0" />
+  <CountdownPage v-if="currentPage === 1" />
+  <GamePage v-if="currentPage === 2" />
+  <ResultPage v-if="currentPage === 3" />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import { storeToRefs } from 'pinia';
+import forbesStore from '@/stores/forbesStore';
+import StartPage from '@/components/StartPage.vue';
+import CountdownPage from '@/components/CountdownPage.vue';
+import GamePage from '@/components/GamePage.vue';
+import ResultPage from '@/components/ResultPage.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    StartPage,
+    CountdownPage,
+    GamePage,
+    ResultPage,
+  },
+  setup() {
+    const forbes = forbesStore();
+    const { currentPage } = storeToRefs(forbes);
+    return {
+      currentPage,
+    };
   },
 };
 </script>
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  font-family: 'Helvetica', 'Arial', 'LiHei Pro', '黑體-繁', '微軟正黑體', sans-serif;
+  background-image: url('assets/bg.png');
+  background-repeat: repeat;
 }
 </style>
