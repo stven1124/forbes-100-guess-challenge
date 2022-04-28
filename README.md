@@ -1,24 +1,15 @@
-# forbes_100_guess_challenge
+# Forbes 全球百大富豪猜人名挑戰遊戲
 
-## Project setup
-```
-npm install
-```
+> 這是一份前端練習用，猜人名挑戰遊戲。
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## 開始畫面
 
-### Compiles and minifies for production
-```
-npm run build
-```
+![](https://i.imgur.com/0CHEEnd.png)
 
-### Lints and fixes files
-```
-npm run lint
-```
+## 遊戲畫面
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![](https://i.imgur.com/dELDJO1.png)
+
+## Demo
+
+[https://stven1124.github.io/forbes-100-guess-challenge/](https://stven1124.github.io/forbes-100-guess-challenge/ "https://stven1124.github.io/forbes-100-guess-challenge/")
