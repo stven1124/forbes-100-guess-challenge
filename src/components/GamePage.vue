@@ -148,7 +148,7 @@ export default {
       border: unset;
       border-right: 3px solid #bfa78e;
       border-bottom: 3px solid #bfa78e;
-      @media (hover: hover) {
+      @media (hover: hover) and (pointer: fine) {
         &:hover {
           color: #fff6ec;
           background-color: #a08364;
