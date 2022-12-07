@@ -2,7 +2,7 @@
   <div class="game">
     <img class="game-question-img" :src="questionArray[questionArrayNum].squareImage" alt="" />
     <span class="game-question-title"
-      >{{ questionArrayNum + 1 }}.請從下列選項選出此富豪名字是哪個?</span
+    >{{ questionArrayNum + 1 }}.請從下列選項選出此富豪名字是哪個?</span
     >
     <div class="game-question-multipleChoice">
       <button
@@ -25,7 +25,7 @@
 <script>
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import forbesStore from '@/stores/forbesStore';
+import forbesStore from '../stores/forbesStore';
 
 export default {
   name: 'GamePage',

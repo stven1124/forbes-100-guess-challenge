@@ -28,7 +28,7 @@
 
 <script>
 import { storeToRefs } from 'pinia';
-import forbesStore from '@/stores/forbesStore';
+import forbesStore from '../stores/forbesStore';
 
 export default {
   name: 'ResultPage',
