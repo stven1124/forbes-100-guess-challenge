@@ -7,11 +7,11 @@
 
 <script>
 import { storeToRefs } from 'pinia';
-import forbesStore from '@/stores/forbesStore';
-import StartPage from '@/components/StartPage.vue';
-import CountdownPage from '@/components/CountdownPage.vue';
-import GamePage from '@/components/GamePage.vue';
-import ResultPage from '@/components/ResultPage.vue';
+import forbesStore from './stores/forbesStore';
+import StartPage from './components/StartPage.vue';
+import CountdownPage from './components/CountdownPage.vue';
+import GamePage from './components/GamePage.vue';
+import ResultPage from './components/ResultPage.vue';
 
 export default {
   name: 'App',
