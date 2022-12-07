@@ -4,29 +4,27 @@
     <div class="start-content">
       <div class="subtitle">Forbes</div>
       <div class="title">全球百大富豪猜人名挑戰</div>
-      <button type="button" class="startButton" @click="startGame" :disabled="disabledBtn">START</button>
+      <button
+        type="button"
+        class="startButton"
+        @click="startGame"
+        :disabled="loadingData"
+      >
+        START
+      </button>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { storeToRefs } from 'pinia';
 import forbesStore from '../stores/forbesStore';
 
-export default {
-  name: 'StartPage',
-  setup() {
-    const forbes = forbesStore();
-    const { disabledBtn, currentPage } = storeToRefs(forbes);
-    forbes.getForbesData();
-    const startGame = () => {
-      currentPage.value = 1;
-    };
-    return {
-      startGame,
-      disabledBtn,
-    };
-  },
+const forbes = forbesStore();
+const { loadingData, currentPage } = storeToRefs(forbes);
+forbes.getForbesData();
+const startGame = () => {
+  currentPage.value = 1;
 };
 </script>
 

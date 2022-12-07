@@ -22,98 +22,83 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import forbesStore from '../stores/forbesStore';
 
-export default {
-  name: 'GamePage',
-  setup() {
-    const forbes = forbesStore();
-    const { forbesData, currentPage } = storeToRefs(forbes);
-    const questionArray = ref([]);
-    const questionArrayNum = ref(0);
-    const buttonColor = ref('');
-    const buttonIndex = ref(0);
-    const buttonDisabled = ref(false);
-    const score = ref(0);
+const forbes = forbesStore();
+const { forbesData, currentPage } = storeToRefs(forbes);
+const questionArray = ref([]);
+const questionArrayNum = ref(0);
+const buttonColor = ref('');
+const buttonIndex = ref(0);
+const buttonDisabled = ref(false);
+const score = ref(0);
 
-    // 將選擇題隨機排序
-    const shuffle = (array) => {
-      const arr = array;
-      for (let i = arr.length - 1; i > 0; i -= 1) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-    };
+// 將選擇題隨機排序
+const shuffle = (array) => {
+  const arr = array;
+  for (let i = arr.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+};
 
-    // 產生十個遊戲題目資料
-    for (let i = 0; i < 10; i += 1) {
-      // 取出正確的人名選項
-      const randomNum = Math.floor(Math.random() * forbesData.value.length);
-      const { personName } = forbesData.value[randomNum] || {};
-      let { squareImage } = forbesData.value[randomNum] || {};
-      const ImgHttpsVerify = 'https:';
-      if (!squareImage.includes(ImgHttpsVerify)) {
-        squareImage = ImgHttpsVerify + squareImage;
-      }
-      questionArray.value.push({
-        personName,
-        squareImage,
-        personNameArray: [{ personName, isTrue: true, isClick: false }],
+// 產生十個遊戲題目資料
+for (let i = 0; i < 10; i += 1) {
+  // 取出正確的人名選項
+  const randomNum = Math.floor(Math.random() * forbesData.value.length);
+  const { personName } = forbesData.value[randomNum] || {};
+  let { squareImage } = forbesData.value[randomNum] || {};
+  const ImgHttpsVerify = 'https:';
+  if (!squareImage.includes(ImgHttpsVerify)) {
+    squareImage = ImgHttpsVerify + squareImage;
+  }
+  questionArray.value.push({
+    personName,
+    squareImage,
+    personNameArray: [{ personName, isTrue: true, isClick: false }],
+  });
+  forbesData.value.splice(randomNum, 1);
+  // 取出錯誤的三個人名選項
+  for (let j = 0; j < 3; j += 1) {
+    const randomNum2 = Math.floor(Math.random() * forbesData.value.length);
+    const personName2 = forbesData.value[randomNum2].personName;
+    questionArray.value[i].personNameArray.push({
+      personName: personName2,
+      isTrue: false,
+      isClick: false,
+    });
+  }
+  shuffle(questionArray.value[i].personNameArray);
+}
+
+// 選擇選擇題按鈕
+const confirmSelect = (data, index) => {
+  buttonDisabled.value = true;
+  buttonIndex.value = index;
+  const dataValue = data;
+  dataValue.isClick = !dataValue.isClick;
+  if (data.isTrue) {
+    buttonColor.value = 'green';
+    score.value += 1;
+  } else {
+    buttonColor.value = 'red';
+  }
+  setTimeout(() => {
+    if (questionArrayNum.value < 9) {
+      questionArrayNum.value += 1;
+    } else {
+      currentPage.value = 3;
+      forbes.$patch((state) => {
+        state.resultData = questionArray;
+        state.score = score;
       });
-      forbesData.value.splice(randomNum, 1);
-      // 取出錯誤的三個人名選項
-      for (let j = 0; j < 3; j += 1) {
-        const randomNum2 = Math.floor(Math.random() * forbesData.value.length);
-        const personName2 = forbesData.value[randomNum2].personName;
-        questionArray.value[i].personNameArray.push({
-          personName: personName2,
-          isTrue: false,
-          isClick: false,
-        });
-      }
-      shuffle(questionArray.value[i].personNameArray);
     }
-
-    // 選擇選擇題按鈕
-    const confirmSelect = (data, index) => {
-      buttonDisabled.value = true;
-      buttonIndex.value = index;
-      const dataValue = data;
-      dataValue.isClick = !dataValue.isClick;
-      if (data.isTrue) {
-        buttonColor.value = 'green';
-        score.value += 1;
-      } else {
-        buttonColor.value = 'red';
-      }
-      setTimeout(() => {
-        if (questionArrayNum.value < 9) {
-          questionArrayNum.value += 1;
-        } else {
-          currentPage.value = 3;
-          forbes.$patch((state) => {
-            state.resultData = questionArray;
-            state.score = score;
-          });
-        }
-        buttonColor.value = '';
-        buttonDisabled.value = false;
-      }, 1000);
-    };
-
-    return {
-      forbesData,
-      questionArray,
-      questionArrayNum,
-      confirmSelect,
-      buttonColor,
-      buttonIndex,
-      buttonDisabled,
-    };
-  },
+    buttonColor.value = '';
+    buttonDisabled.value = false;
+  }, 1000);
 };
 </script>
 

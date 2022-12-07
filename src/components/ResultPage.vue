@@ -26,25 +26,15 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { storeToRefs } from 'pinia';
 import forbesStore from '../stores/forbesStore';
 
-export default {
-  name: 'ResultPage',
-  setup() {
-    const forbes = forbesStore();
-    const { resultData, score, currentPage } = storeToRefs(forbes);
+const forbes = forbesStore();
+const { resultData, score, currentPage } = storeToRefs(forbes);
 
-    const reStart = () => {
-      currentPage.value = 0;
-    };
-    return {
-      resultData,
-      score,
-      reStart,
-    };
-  },
+const reStart = () => {
+  currentPage.value = 0;
 };
 </script>
 

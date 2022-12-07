@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import {
+  getDatabase, ref, child, get,
+} from 'firebase/database';
 
 export default defineStore('forbesStore', {
   state: () => ({
@@ -7,16 +9,28 @@ export default defineStore('forbesStore', {
     forbesData: [],
     resultData: [],
     score: 0,
+    loadingData: true,
   }),
   actions: {
     getForbesData() {
-      const api = `${process.env.VUE_APP_FORBES_API}?limit=100`;
-      axios.get(api).then((response) => {
-        const NotFoundImgVerify = 'cropX1=0&cropX2=800&cropY1=0&cropY2=800';
-        this.forbesData = response.data.filter(
-          (item) => item.squareImage && !item.squareImage.includes(NotFoundImgVerify),
-        );
-      });
+      if (!this.forbesData.length) {
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, 'forbesData/forbesPersonList'))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              const snapshotData = snapshot.val();
+              Object.values(snapshotData).forEach((item) => {
+                this.forbesData.push(item);
+              });
+              this.loadingData = false;
+            } else {
+              console.log('No data available');
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
     },
   },
   getters: {},

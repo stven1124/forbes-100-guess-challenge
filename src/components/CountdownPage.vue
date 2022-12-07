@@ -4,46 +4,37 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import forbesStore from '../stores/forbesStore';
 
-export default {
-  name: 'CountdownPage',
-  setup() {
-    const forbes = forbesStore();
-    const { currentPage } = storeToRefs(forbes);
-    const countDownNum = ref(3);
-    const animated = ref(false);
-    let countInterval = null;
+const forbes = forbesStore();
+const { currentPage } = storeToRefs(forbes);
+const countDownNum = ref(3);
+const animated = ref(false);
+let countInterval = null;
 
-    onMounted(() => {
+onMounted(() => {
+  animated.value = true;
+});
+
+const countdownStart = () => {
+  countInterval = setInterval(() => {
+    animated.value = false;
+    setTimeout(() => {
       animated.value = true;
-    });
+    }, 100);
 
-    const countdownStart = () => {
-      countInterval = setInterval(() => {
-        animated.value = false;
-        setTimeout(() => {
-          animated.value = true;
-        }, 100);
-
-        countDownNum.value -= 1;
-        if (countDownNum.value === 0) {
-          clearInterval(countInterval);
-          currentPage.value = 2;
-        }
-      }, 1000);
-    };
-
-    countdownStart();
-    return {
-      countDownNum,
-      animated,
-    };
-  },
+    countDownNum.value -= 1;
+    if (countDownNum.value === 0) {
+      clearInterval(countInterval);
+      currentPage.value = 2;
+    }
+  }, 1000);
 };
+
+countdownStart();
 </script>
 
 <style scoped lang="scss">
