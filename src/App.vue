@@ -5,30 +5,17 @@
   <ResultPage v-if="currentPage === 3" />
 </template>
 
-<script>
+<script setup>
+import { defineAsyncComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 import forbesStore from './stores/forbesStore';
-import StartPage from './components/StartPage.vue';
-import CountdownPage from './components/CountdownPage.vue';
-import GamePage from './components/GamePage.vue';
-import ResultPage from './components/ResultPage.vue';
 
-export default {
-  name: 'App',
-  components: {
-    StartPage,
-    CountdownPage,
-    GamePage,
-    ResultPage,
-  },
-  setup() {
-    const forbes = forbesStore();
-    const { currentPage } = storeToRefs(forbes);
-    return {
-      currentPage,
-    };
-  },
-};
+const StartPage = defineAsyncComponent(() => import('./components/StartPage.vue'));
+const CountdownPage = defineAsyncComponent(() => import('./components/CountdownPage.vue'));
+const GamePage = defineAsyncComponent(() => import('./components/GamePage.vue'));
+const ResultPage = defineAsyncComponent(() => import('./components/ResultPage.vue'));
+const forbes = forbesStore();
+const { currentPage } = storeToRefs(forbes);
 </script>
 
 <style lang="scss">
